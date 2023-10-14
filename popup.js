@@ -7,7 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const messageInput = document.getElementById('messageInput');
     const sendMessageButton = document.getElementById('sendMessageButton');
     const urlContainer = document.getElementById('urlContainer');
-    var rootUrl
+    var rootUrl;
+    var amountMessages = 0;
+    var path = "/responses/greeting";
     
     function getRootUrl() {
         // Get the active tab's URL
@@ -35,7 +37,15 @@ document.addEventListener('DOMContentLoaded', function () {
     catch (error) {
         console.log(error);
     }
-    fetch(IP+port+"/responses/greeting", {
+    if (amountMessages > 0)
+    {
+       path = "/responses/greeting";
+    }
+    else
+    {
+       path = "/responses/greeting";
+    }
+    fetch(IP+port+path, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -62,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
         chrome.storage.local.get(url, function(result) {
             const chatMessages = result[url] || [];
             displaySavedMessages(chatMessages);
+	    amountMessages = chatMessages.length
         });
     }
 
