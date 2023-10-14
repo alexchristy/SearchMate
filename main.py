@@ -5,6 +5,7 @@ from utils import is_valid_query, load_environment
 from chatgpt import GPT4
 from googlesearch import GoogleSearch
 import json
+from web_utils import fetch_page_content
 
 # Initialize Logging
 logging.basicConfig(filename='app.log', level=logging.INFO, format='%(asctime)s [%(levelname)s] - %(message)s')
@@ -70,14 +71,23 @@ def find_page():
         if len(unique_results_list) <= 0:
             return jsonify({'error': 'No relevant links found.'}), 423
         
-        relevant_link = gpt4.get_relevant_result(query, base_url, unique_results_list)
+        for result in unique_results_list:
+            relevant_link = gpt4.get_relevant_result(query, base_url, unique_results_list)
+
+            page_content = fetch_page_content(relevant_link)
+
+            # If successful, break out of the loop
+            if page_content is not None:
+                break
+
+            unique_results_list.remove(result)
 
         if relevant_link == 'None' or relevant_link is None:
             return jsonify({'error': 'No relevant links found.'}), 424
         
+        customer_response = gpt4.gen_customer_response(query, base_url, relevant_link, page_content)
 
-
-        return jsonify({'message': relevant_link}), 200
+        return jsonify({"link": relevant_link, "message": customer_response}), 200
 
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")

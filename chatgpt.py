@@ -2,8 +2,8 @@ import os
 import openai
 import logging
 import json
-from urllib.request import urlopen
-from utils import num_tokens_from_string, divide_and_round_up, chunk_array
+from web_utils import fetch_page_content
+from utils import num_tokens_from_string, divide_and_round_up
 
 class GPT4:
     def __init__(self, api_key=None):
@@ -162,3 +162,40 @@ class GPT4:
         
         logging.info(f"Unexpected response from GPT-4: {message}")
         return None
+
+    def gen_customer_response(self, user_query: str, base_url: str, relevant_link: str, page_content: str):
+
+        if page_content is None:
+            logging.info("No page content in customer_response(). Using generic response.")
+            page_content = "(empty)"
+        
+        page_num_tokens = num_tokens_from_string(page_content)
+
+        if page_num_tokens > 7800:
+            logging.info(f"Page content is too long ({page_num_tokens} tokens), truncating to 7800 tokens.")
+            chunks = divide_and_round_up(page_num_tokens, 7800)
+
+            end_index = page_num_tokens / chunks
+            end_index = int(end_index)
+
+            page_content = page_content[:end_index]
+
+
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {
+                "role": "user",
+                "content": f"As the best salesperson on the planet, your exceptional skills are needed to analyze the provided data and generate a response. The data consists of three components: User Query, User URL, and Page Content. User Query refers to the search term entered by the user on the website, while User URL is the website they were on when making that query. Page Content represents the relevant text on the page related to the user's query. The relevant link is the link to the page where the Page Content came from. The relevant link is the page that most matches what the user was looking for.\\n\\nYour first task is to determine whether the user was seeking to make a purchase, whether it be a product or a service. If the user was indeed looking for a purchasable item, your objective is to subtly sell them a product, just like a professional salesperson would. This requires carefully examining their query and providing a concise and clear summary of the page content that directly addresses their query. You can find details in the Page Content. Additionally, you should highlight any relevant information and details about the product that may persuade them to make a purchase. The aim is to subtly guide them towards the product or service they are seeking.\\n\\nHowever, if the user's search does not indicate an intention to purchase, your response should focus on concisely summarizing the page content and addressing their specific query. Your goal is to provide them with a clear and comprehensive answer to what they were searching for, without attempting to sell them anything.\\n\\nPlease provide only the response that you would give to the customer based on the above instructions. If Page Content is empty or None craft a response similarly but make it relevant to the User Query wihtout mentioning you do not have details or page content. You are directly communicating to the customer. Only give the response to the customer. Call the user query a question only. Keep it short and concise and not very technical. Max 3 concise sentences.\n\nUser Query: {user_query}\nUser URL: {base_url}\nRelevant Link: {relevant_link}\nPage Content: {page_content}"
+                }
+            ],
+            temperature=0.25,
+            max_tokens=256,
+            top_p=1,
+            frequency_penalty=0,
+            presence_penalty=0
+        )
+
+        message = response['choices'][0]['message']['content']
+
+        return message
