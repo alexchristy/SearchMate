@@ -59,12 +59,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const messageElement = document.createElement('div');
         messageElement.textContent = sender + ': ' + message;
         chatMessages.appendChild(messageElement);
-	const parser = document.createElement('a');
+	    const parser = document.createElement('a');
         parser.href = urlContainer.textContent;
     
         // Combine the protocol, hostname, and port to get the root URL
         const rootUrl = parser.protocol + '//' + parser.hostname;
-	console.log(rootUrl);
+	    console.log(rootUrl);
         saveMessage(messageElement.textContent);
     }
 
