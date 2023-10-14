@@ -46,8 +46,8 @@ function getRootUrl(urlContainer) {
 async function startchat(urlContainer) {
     getRootUrl(urlContainer).then(async(url) => {
         rootUrl = url;
-        amountMessages = await loadMessages(rootUrl);
-        console.log(amountMessages);
+        return loadMessages(rootUrl);})
+	.then(async (messageCount) => {
         if (amountMessages > 0)
         {
             console.log("welcome back");
@@ -84,16 +84,18 @@ async function startchat(urlContainer) {
             return readStream();     
         }).then(message => {
                 displayMessage("Chattr", JSON.parse(message).message);
-            })
+        })
     });
 }
 
 async function loadMessages(url) {
-    chrome.storage.local.get(url, function(result) {
-        const chatMessages = result[url] || [];
-        displaySavedMessages(chatMessages);
-        console.log(chatMessages.length);
-        return chatMessages.length;
+    return new Promise((resolve) => { 
+	    chrome.storage.local.get(url, function(result) {
+            const chatMessages = result[url] || [];
+            displaySavedMessages(chatMessages);
+            console.log(chatMessages.length);
+            resolve(chatMessages.length);
+            });
     });
 }
 
