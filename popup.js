@@ -105,6 +105,7 @@ function typeMessage(message) {
         let i = 0;
         const messageElement = document.createElement('div');
         const chatMessages = document.getElementById('chatMessages');
+	messageElement.setAttribute('class', 'message-bubble');
         chatMessages.appendChild(messageElement);
 
         function typeChar() {
@@ -126,7 +127,7 @@ function sendMessage() {
     const message = messageInput.value.trim();
 
     if (message !== '') {
-      //displayMessage('You', message); // Display the message immediately
+        displayMessage('You', message); // Display the message immediately
 
         // Simulate typing animation for the sent message
         await typeMessage(message);
