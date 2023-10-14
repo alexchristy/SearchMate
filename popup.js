@@ -1,10 +1,24 @@
 // popup.js
 
 document.addEventListener('DOMContentLoaded', function () {
+    const urlContainer = document.getElementById('urlContainer');
+
+    // Get the active tab's URL
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        const currentTab = tabs[0];
+        const url = currentTab.url;
+
+        // Display the URL in your popup
+        urlContainer.textContent = `Current URL: ${url}`;
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
     // Get references to the input field and the send button
     const messageInput = document.getElementById('messageInput');
     const sendMessageButton = document.getElementById('sendMessageButton');
-
+    
     // Add a click event listener to the send button
     sendMessageButton.addEventListener('click', function () {
         sendMessage();
