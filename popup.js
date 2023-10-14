@@ -28,8 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function showLoading() {
     const loadingContainer = document.createElement('div');
     const chatMessages = document.getElementById('chatMessages');
-    loadngContainer.setAttribute('class', 'chattr-message-bubble');
-    loadingContainer.setAttribute('id', 'loader');
+    loadingContainer.setAttribute('class', 'chattr-message-bubble');
 
     const loading = document.createElement('div');
     loading.classList.add('loading');
@@ -125,7 +124,7 @@ async function loadMessages(url) {
 }
 
 // Function to simulate typing animation
-function typeMessage(message) {
+function typeMessage(message, link) {
     return new Promise((resolve) => {
         let i = 0;
         const messageElement = document.createElement('div');
@@ -157,6 +156,39 @@ async function sendMessage() {
 
         messageInput.value = ''; // Clear the input field
     }
+    data = {url: rootUrl, query: message};
+    path = "/find/page";
+    showLoading();
+    fetch(IP+port+path, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+	    hideLoading();
+            const readableStream = response.body;
+            const textDecoder = new TextDecoder();
+            const reader = readableStream.getReader();
+    
+            function readStream() {
+                return reader.read().then(({ done, value }) => {
+                    if (done) {
+                        console.log('Stream reading complete');
+                        return;
+                    }
+    
+                    const text = textDecoder.decode(value);
+                    return text;
+                });
+            }
+    
+            return readStream();     
+    }).then(async message => {
+            productUrl = JSON.parse(message).link;
+            await typeMessage(JSON.parse(message).message, productUrl);
+        });
 }
 
 // Function to display a message in the chat messages container and then save to local storage

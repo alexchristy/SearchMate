@@ -1,7 +1,7 @@
 /* Styles for the chat rectangle */
         .chat-rectangle {
-            width: 300px; /* Width of the chat rectangle */
-            height: 400px; /* Height of the chat rectangle */
+            width: 350px; /* Width of the chat rectangle */
+            height: 500px; /* Height of the chat rectangle */
             border-color: #000000;
             overflow: hidden;
         }
@@ -16,6 +16,14 @@
             padding: 10px; /* Add padding for better visual */
             display: flex;
             flex-direction: column; /* Stack messages vertically */
+        }
+
+        /* Styles for hyperlinks within the chat messages */
+        .chat-message a {
+            color: #fff; /* Set hyperlink color */
+            text-decoration: underline; /* Underline style for hyperlinks */
+            word-wrap: break-word; /* Ensure long URLs wrap within the message bubble */
+            word-break: break-all; /* Break URLs and long words */
         }
 
         /* Styles for individual chat messages */
@@ -79,8 +87,8 @@
 	}
 
 	.loading-circle {
-    	    width: 20px;
-    	    height: 20px;
+    	    width: 7px;
+    	    height: 7px;
     	    border-radius: 50%;
     	    background-color: #0077b6; /* Color of the loading circles */
     	    margin: 0 5px;
