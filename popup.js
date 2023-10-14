@@ -2,6 +2,8 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     // Get references to the input field and the send button
+    const IP = "http://10.167.0.100";
+    const port = ":5000";
     const messageInput = document.getElementById('messageInput');
     const sendMessageButton = document.getElementById('sendMessageButton');
     const urlContainer = document.getElementById('urlContainer');
@@ -33,6 +35,15 @@ document.addEventListener('DOMContentLoaded', function () {
     catch (error) {
         console.log(error);
     }
+    fetch(IP+port+"/responses/greeting", {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => {
+        displayMessage("Chattr", response.json().message);     
+    })
     });
     
     // Add a click event listener to the send button
