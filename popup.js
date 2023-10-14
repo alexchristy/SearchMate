@@ -7,18 +7,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add a click event listener to the send button
     sendMessageButton.addEventListener('click', function () {
-        // Get the message from the input field
-        const message = messageInput.value;
+        sendMessage();
+    });
 
-        // Do something with the message (e.g., send it or display it)
-        if (message.trim() !== '') {
-            // For demonstration, let's display the message in the chat messages container
-            displayMessage('You', message);
-
-            // Clear the input field
-            messageInput.value = '';
+    // Add a key press event listener to the input field
+    messageInput.addEventListener('keyup', function (event) {
+        if (event.key === "Enter") {
+            sendMessage();
         }
     });
+
+    function sendMessage() {
+        const message = messageInput.value;
+
+        if (message.trim() !== '') {
+            displayMessage('You', message);
+            messageInput.value = '';
+        }
+    }
 
     // Function to display a message in the chat messages container
     function displayMessage(sender, message) {
