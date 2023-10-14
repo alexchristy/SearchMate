@@ -18,7 +18,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Get references to the input field and the send button
     const messageInput = document.getElementById('messageInput');
     const sendMessageButton = document.getElementById('sendMessageButton');
-    loadMessages();
+    try {
+        loadMessages();
+    }
+    catch (error) {}
     
     // Add a click event listener to the send button
     sendMessageButton.addEventListener('click', function () {
