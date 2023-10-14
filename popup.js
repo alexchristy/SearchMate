@@ -107,7 +107,8 @@ async function startchat(urlContainer) {
     
             return readStream();     
         }).then(async message => {
-		const contents =  await JSON.parse(message);
+		const content =  await JSON.parse(message);
+        console.log(content);
                 await typeMessage(content.message, content.url);
         })
     });
@@ -141,8 +142,9 @@ function typeMessage(message, link) {
                 setTimeout(typeChar, 30); // Adjust the delay (in milliseconds) between characters
             } else {
 		if (link != null) {
+                    messageElement.textContent += " ";
                     const hyperLink = document.createElement('a');
-                    hyperLink.addAttribute('href', link);
+                    hyperLink.setAttribute('href', link);
                     hyperLink.textContent = "Click Here!";
                     messageElement.append(hyperLink);
 		}
@@ -164,7 +166,7 @@ async function sendMessage() {
 
         messageInput.value = ''; // Clear the input field
     }
-    data = {url: rootUrl, query: message};
+    data = {url: rootUrl, query: message.message};
     path = "/find/page";
     showLoading();
     fetch(IP+port+path, {
@@ -204,15 +206,7 @@ function displayMessage(sender, message) {
     const chatMessages = document.getElementById('chatMessages');
     const messageElement = document.createElement('div');
     messageElement.setAttribute('class', 'user-message-bubble');
-    messageElement.textContent = sender + ':' + message.message;
-
-    if (message.url != null) {
-        const hyperLink = document.createElement('a');
-        hyperLink.addAttribute('href', message.url);
-        hyperLink.textContent = "Click Here!";
-        messageElement.append(hyperLink);
-    }
-
+    messageElement.textContent = sender + ': ' + message.message;
     chatMessages.appendChild(messageElement);
     saveMessage(rootUrl, messageElement.textContent, message.url);
 }
@@ -224,16 +218,17 @@ function displaySavedMessages(messages) {
 
     messages.forEach(message => {
         const messageElement = document.createElement('div');
-        messageElement.textContent = message.message;
+        messageElement.textContent = message.message + " ";
+
         
 	if (message.url != null) {
 	    const hyperLink = document.createElement('a');
-	    hyperLink.addAttribute('href', message.url);
+	    hyperLink.setAttribute('href', message.url);
 	    hyperLink.textContent = "Click Here!";
 	    messageElement.append(hyperLink);
         }
 
-        if (message[0] == 'C') {
+        if (message.message[0] == 'C') {
             messageElement.setAttribute('class', 'chattr-message-bubble');
         }
         else {
@@ -246,7 +241,7 @@ function displaySavedMessages(messages) {
 function saveMessage(url, message, productUrl = null) {
     chrome.storage.local.get(url, function(result) {
         const chatMessages = result[url] || [];
-        const messageData = {url: productUrl, message: message};
+        const messageData = {url: productUrl, message: message.substring(0, message.length - 11)};
         chatMessages.push(messageData);
         const data = {};
 	
