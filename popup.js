@@ -10,31 +10,30 @@ document.addEventListener('DOMContentLoaded', function () {
     function getRootUrl() {
         // Get the active tab's URL
         return new Promise((resolve, reject) => {
-		chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        	const currentTab = tabs[0];
-        	const url = currentTab.url;
+		    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        	    const currentTab = tabs[0];
+        	    const url = currentTab.url;
     
-        	// Display the URL in your popup
-        	urlContainer.textContent = url;
-        	});        
-            	const parser = document.createElement('a');
-            	parser.href = urlContainer.textContent;
+        	    // Display the URL in your popup
+        	    urlContainer.textContent = url;
+                const parser = document.createElement('a');
+                parser.href = urlContainer.textContent;
 
-            	// Combine the protocol, hostname, and port to get the root URL
-            	resolve(parser.protocol + '//' + parser.hostname);
-	});
+                // Combine the protocol, hostname, and port to get the root URL
+                resolve(parser.protocol + '//' + parser.hostname);
+            });        
+	    });
     }
     getRootUrl().then((url) => {
 	rootUrl = url;
 	console.log(rootUrl);
-    });
-
     try {
         loadMessages(rootUrl);
     }
     catch (error) {
         console.log(error);
     }
+    });
     
     // Add a click event listener to the send button
     sendMessageButton.addEventListener('click', function () {
