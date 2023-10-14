@@ -48,7 +48,7 @@ async function startchat(urlContainer) {
         rootUrl = url;
         return loadMessages(rootUrl);})
 	.then(async (messageCount) => {
-        if (amountMessages > 0)
+        if (messageCount > 0)
         {
             console.log("welcome back");
             path = "/responses/welcome-back";
@@ -112,6 +112,7 @@ function sendMessage() {
 function displayMessage(sender, message) {
     const chatMessages = document.getElementById('chatMessages');
     const messageElement = document.createElement('div');
+    messageElement.setAttribute('class', 'message-bubble');
     messageElement.textContent = sender + ': ' + message;
     chatMessages.appendChild(messageElement);
     saveMessage(rootUrl, messageElement.textContent);
@@ -124,6 +125,7 @@ function displaySavedMessages(messages) {
 
     messages.forEach(message => {
         const messageElement = document.createElement('div');
+        messageElement.setAttribute('class', 'message-bubble');
         messageElement.textContent = message;
         chatDiv.appendChild(messageElement);
     });

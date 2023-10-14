@@ -1,40 +1,57 @@
 /* Styles for the chat rectangle */
         .chat-rectangle {
-            background-color: #0077b6;
             width: 300px; /* Width of the chat rectangle */
             height: 400px; /* Height of the chat rectangle */
-            border-radius: 10px;
+            border-color: #000000;
             overflow: hidden;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
         }
 
         /* Styles for the chat messages */
         .chat-messages {
-            padding: 10px;
+            font-size: 1em; /* Adjust the font size */
+            line-height: 1.4;
             overflow-y: scroll;
             height: 80%;
             background-color: #fff;
+            padding: 10px; /* Add padding for better visual */
+        }
+
+        /* Styles for individual chat messages */
+        .message-bubble {
+        display: block;
+        max-width: 70%; /* Adjust the maximum width of the bubble */
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #cccccc;
+        color: #000;
+        border-radius: 10px;
         }
 
         /* Styles for the input field and send button */
         .chat-input {
             display: flex;
-            padding: 10px;
-            background-color: #fff;
+            padding: 15px;
+            background-color: #cccccc;;
         }
 
         .chat-input input {
             flex: 1;
             border: none;
             border-radius: 5px;
+            background-color: #cccccc;
             padding: 5px;
         }
 
         .chat-input button {
-            background-color: #0077b6;
-            color: #fff;
-            border: none;
+            background-color: #ff0000;
+            color: #000;
+            border: 1px solid #000000; /* Border color and width */
             border-radius: 5px;
             margin-left: 5px;
             cursor: pointer;
+        }  
+
+        .extension-title {
+            font-weight: 700;
+            font-size: 16px;
         }
