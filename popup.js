@@ -25,6 +25,29 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+function showLoading() {
+    const loadingContainer = document.createElement('div');
+    const chatMessages = document.getElementById('chatMessages');
+    loadngContainer.setAttribute('class', 'chattr-message-bubble');
+    loadingContainer.setAttribute('id', 'loader');
+
+    const loading = document.createElement('div');
+    loading.classList.add('loading');
+
+    for (let i = 0; i < 3; i++) {
+        const loadingCircle = document.createElement('div');
+        loadingCircle.classList.add('loading-circle');
+        loading.appendChild(loadingCircle);
+    }
+    loadingContainer.appendChild(loading);
+    chatMessages.append(loadingContainer);
+}
+
+function hideLoading() {
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.removeChild(chatMessages.lastElementChild);
+}
+
 function getRootUrl(urlContainer) {
     // Get the active tab's URL
     return new Promise((resolve, reject) => {
@@ -58,6 +81,7 @@ async function startchat(urlContainer) {
             console.log("Hi");
             path = "/responses/greeting";
         }
+	showLoading();
         fetch(IP+port+path, {
             method: 'GET',
             headers: {
@@ -65,6 +89,7 @@ async function startchat(urlContainer) {
             },
         })
         .then(response => {
+	    hideLoading();
             const readableStream = response.body;
             const textDecoder = new TextDecoder();
             const reader = readableStream.getReader();
