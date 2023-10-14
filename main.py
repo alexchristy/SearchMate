@@ -41,6 +41,14 @@ def find_page():
         if not is_valid_query(query):
             return jsonify({'error': 'Invalid query.'}), 422
         
+        is_user_searching = gpt4.is_user_searching(query, url)
+
+        if not is_user_searching:
+            return jsonify({'error': 'User is not searching for the given query.'}), 425
+        
+        if is_user_searching is None:
+            return jsonify({'error': 'An error occurred.'}), 500
+
         # Extract the base URL from the given URL
         base_url = get_base_url(url)
 
@@ -67,7 +75,7 @@ def find_page():
         if relevant_link == 'None' or relevant_link is None:
             return jsonify({'error': 'No relevant links found.'}), 424
         
-        
+
 
         return jsonify({'message': relevant_link}), 200
 

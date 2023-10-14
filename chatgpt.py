@@ -134,3 +134,31 @@ class GPT4:
         relevant_link = response['choices'][0]['message']['content']
 
         return relevant_link
+    
+    def is_user_searching(self, user_query: str, base_url: str):
+
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {
+                "role": "user",
+                "content": f"I am seeking your expertise in analyzing a user's search intent on a specific website. Your exceptional ability to discern intentions makes you the best person for this task. The user's search could encompass various aspects such as a product, a location, or specific information available on the website. To aid you in making an accurate determination, I will provide you with the following information: the User Query, which represents what the user is saying or desiring, and the User URL, which indicates the current site the user is on. Your objective for this task is to examine the user query and user URL and ascertain whether the user is searching for a product, a location, or specific information available on that site. If it is evident that the user is searching for something, please return True. Conversely, if it seems that the user is not searching for anything, please return False. Please refrain from returning any other information beyond these outcomes.\n\nUser Query: {user_query}\nUser URL: {base_url}"
+                }
+            ],
+            temperature=0,
+            max_tokens=256,
+            top_p=1,
+            frequency_penalty=0,
+            presence_penalty=0
+        )
+
+        message = response['choices'][0]['message']['content']
+
+        if message == 'True':
+            return True
+        
+        if message == 'False':
+            return False
+        
+        logging.info(f"Unexpected response from GPT-4: {message}")
+        return None
