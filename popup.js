@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Get references to the input field and the send button
     const messageInput = document.getElementById('messageInput');
     const sendMessageButton = document.getElementById('sendMessageButton');
+    const urlContainer = document.getElementById('urlContainer');
+
     try {
         loadMessages();
     }
@@ -57,6 +59,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const messageElement = document.createElement('div');
         messageElement.textContent = sender + ': ' + message;
         chatMessages.appendChild(messageElement);
+	
+	const parser = document.createElement('a');
+        parser.href = urlContainer.textContent;
+    
+        // Combine the protocol, hostname, and port to get the root URL
+        const rootUrl =  parser.protocol + '//' + parser.hostname;
+        console.log(rootUrl);
         saveMessage(messageElement.textContent);
     }
 
