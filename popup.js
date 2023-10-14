@@ -14,11 +14,16 @@ document.addEventListener('DOMContentLoaded', function () {
         // Display the URL in your popup
         urlContainer.textContent = url;
     });
-    var parser = document.createElement('a');
-    parser.href = urlContainer.textContent;
+    function getRootUrl(url) {
+        const parser = document.createElement('a');
+        parser.href = urlContainer.textContent;
 
-    // Combine the protocol, hostname, and port to get the root URL
-    const rootUrl = parser.protocol + '//' + parser.hostname;
+        // Combine the protocol, hostname, and port to get the root URL
+        return parser.protocol + '//' + parser.hostname;
+    }
+
+    const rootUrl = getRootUrl(urlContainer.textContent);
+    console.log(rootUrl);
 
     try {
         loadMessages(rootUrl);
