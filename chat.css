@@ -17,11 +17,21 @@
         }
 
         /* Styles for individual chat messages */
-        .message-bubble {
+        .chattr-message-bubble {
         display: block;
         max-width: 70%; /* Adjust the maximum width of the bubble */
         margin-bottom: 10px;
         padding: 10px;
+        background-color: #cccccc;
+        color: #000;
+        border-radius: 10px;
+        }
+
+	.user-message-bubble {
+        display: block;
+        max-width: 70%; /* Adjust the maximum width of the bubble */
+        margin-bottom: 10px;
+        padding: 30px 5px;
         background-color: #cccccc;
         color: #000;
         border-radius: 10px;

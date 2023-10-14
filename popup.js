@@ -105,7 +105,7 @@ function typeMessage(message) {
         let i = 0;
         const messageElement = document.createElement('div');
         const chatMessages = document.getElementById('chatMessages');
-        messageElement.setAttribute('class', 'message-bubble');
+        messageElement.setAttribute('class', 'chattr-message-bubble');
         chatMessages.appendChild(messageElement);
         messageElement.textContent += "Chattr: ";
         function typeChar() {
@@ -138,7 +138,7 @@ async function sendMessage() {
 function displayMessage(sender, message) {
     const chatMessages = document.getElementById('chatMessages');
     const messageElement = document.createElement('div');
-    messageElement.setAttribute('class', 'message-bubble');
+    messageElement.setAttribute('class', 'user-message-bubble');
     messageElement.textContent = sender + ': ' + message;
     chatMessages.appendChild(messageElement);
     saveMessage(rootUrl, messageElement.textContent);
