@@ -7,5 +7,5 @@
       "default_popup": "popup.html",
       "default_icon": "img/gator-hack-smaller.png"
     },
-    "manifest_version": 2
+    "manifest_version": 3
   }
