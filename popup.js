@@ -5,24 +5,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const messageInput = document.getElementById('messageInput');
     const sendMessageButton = document.getElementById('sendMessageButton');
     const urlContainer = document.getElementById('urlContainer');
-
-    // Get the active tab's URL
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    var rootUrl;
+    function getRootUrl() {
+        // Get the active tab's URL
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         const currentTab = tabs[0];
         const url = currentTab.url;
     
         // Display the URL in your popup
         urlContainer.textContent = url;
-    });
-    function getRootUrl(url) {
-        const parser = document.createElement('a');
-        parser.href = urlContainer.textContent;
+        }).then(() => {        
+            const parser = document.createElement('a');
+            parser.href = urlContainer.textContent;
 
-        // Combine the protocol, hostname, and port to get the root URL
-        return parser.protocol + '//' + parser.hostname;
+            // Combine the protocol, hostname, and port to get the root URL
+            rootUrl = parser.protocol + '//' + parser.hostname;
+        });
     }
-
-    const rootUrl = getRootUrl(urlContainer.textContent);
+    getRootUrl();
     console.log(rootUrl);
 
     try {
