@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Display the URL in your popup
         urlContainer.textContent = `Current URL: ${url}`;
-	console.log(urlContainer.textContent);
     });
 });
 
