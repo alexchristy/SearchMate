@@ -33,8 +33,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function loadMessages() {
-        chrome.storage.local.get(['chatMessages'], function(result) {
-            const chatMessages = result.chatMessages || [];
+        chrome.storage.local.get(url, function(result) {
+            const chatMessages = result[url] || [];
             displaySavedMessages(chatMessages);
         });
     }
@@ -59,8 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
         // Combine the protocol, hostname, and port to get the root URL
         const rootUrl = parser.protocol + '//' + parser.hostname;
-	    console.log(rootUrl);
-        saveMessage(messageElement.textContent);
+        saveMessage(rootUrl, messageElement.textContent);
     }
 
     // Function to load saved messages when popup is repopend
@@ -76,13 +75,17 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function saveMessage(message) {
-        chrome.storage.local.get(['chatMessages'], function(result) {
-            const chatMessages = result.chatMessages || [];
+    function saveMessage(url, message) {
+        chrome.storage.local.get(url, function(result) {
+            const chatMessages = result[url] || [];
             chatMessages.push(message);
     
-            // Save the updated messages to storage
-            chrome.storage.local.set({ chatMessages: chatMessages });
+            const data = {};
+            data[url] = chatMessages;
+
+            chrome.storage.local.set(data, function() {
+                console.log('Chat message saved to chrome.storage.local:', data);
+            });
         });
     }
 });
