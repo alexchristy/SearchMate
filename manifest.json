@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "manifest_version": 2,
   "name": "Chat Extension",
   "version": "1.0",
@@ -27,3 +28,20 @@
   ],
   "web_accessible_resources": ["popup.html"]
 }
+=======
+    "manifest_version": 3,
+    "name": "Color Changer V3",
+    "version": "1.0",
+    "description": "Change the background color of the webpage.",
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": "img/gator-hack-smaller.png"
+    },
+    "permissions": [
+      "activeTab"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    }
+  }
+>>>>>>> a8edc65d203dd218f6a8f83711c4cecfc12e76f3
