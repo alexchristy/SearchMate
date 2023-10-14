@@ -47,3 +47,48 @@ def num_tokens_from_string(string: str, encoding_name="cl100k_base") -> int:
 def divide_and_round_up(dividend, divisor):
     result = math.ceil(dividend / divisor)
     return result
+
+def chunk_array(arr, num_of_chunks):
+    """
+    Splits an array into a specified number of roughly equal-sized chunks.
+
+    Parameters:
+    arr (list): The list to be divided.
+    num_of_chunks (int): The number of chunks to divide the list into.
+
+    Returns:
+    list: A list of chunks (sub-lists).
+    """
+
+    # Initialize an empty list to hold the chunks
+    chunks = []
+
+    # Check for invalid inputs and log accordingly
+    if not arr or num_of_chunks <= 0:
+        logging.error("Invalid input. Please provide a non-empty array and a positive integer for num_of_chunks.")
+        return chunks
+
+    avg_chunk_size = len(arr) // num_of_chunks  # Calculate average chunk size
+    remainder = len(arr) % num_of_chunks  # Calculate the remainder
+
+    start = 0  # Initialize start index for slicing
+
+    # Loop to create each chunk
+    for i in range(num_of_chunks):
+        end = start + avg_chunk_size  # Calculate end index for slicing
+
+        # Distribute the remainder among the first 'remainder' chunks
+        if remainder > 0:
+            end += 1
+            remainder -= 1
+
+        # Create a chunk and append it to the list of chunks
+        chunk = arr[start:end]
+        chunks.append(chunk)
+
+        logging.info(f"Created chunk {i+1}: {chunk}")
+
+        # Update the start index for the next iteration
+        start = end
+
+    return chunks

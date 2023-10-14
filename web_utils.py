@@ -1,10 +1,10 @@
 from io import StringIO
 import requests
 import logging
-from bs4 import BeautifulSoup
 from urllib.parse import urlparse, urljoin
 import validators
 from lxml import etree
+import xml.etree.ElementTree as ET
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -56,13 +56,6 @@ def get_sitemap_url(url):
         # Log and handle exceptions
         logging.error(f"An error occurred while checking the sitemap: {e}")
         return None
-
-# Example usage
-sitemap_url = get_sitemap_url("https://www.example.com/page")
-if sitemap_url:
-    logging.info(f"Sitemap URL: {sitemap_url}")
-else:
-    logging.error("Failed to get a valid sitemap URL.")
     
 def is_valid_url(url):
     if validators.url(url):
@@ -133,3 +126,48 @@ def fetch_sitemap_contents(sitemap_urls):
         logging.warning("Failed to fetch content from all sitemap URLs.")
     
     return contents
+
+def parse_sitemap_to_urls(sitemap_data):
+    """
+    Parse the sitemap XML data and return a list of URLs.
+
+    Parameters:
+    sitemap_data (str): The sitemap XML data as a string.
+
+    Returns:
+    list: A list of URLs present in the sitemap.
+    """
+
+    links = []  # Initialize an empty array to hold the links
+
+    # Safely attempt to parse the XML data
+    try:
+        root = ET.fromstring(sitemap_data)
+    except ET.ParseError as e:
+        logging.error(f"Error parsing XML: {e}")
+        return links
+
+    # Check for root tag to ensure XML is a sitemap
+    if not root.tag.endswith("urlset"):
+        logging.warning("Root tag does not indicate a sitemap. Parsing might be incorrect.")
+    
+    # Dynamically determine the XML namespace
+    try:
+        namespaces = {'sitemap': root.tag.split('}')[0].strip('{')}
+    except IndexError as e:
+        logging.error(f"Could not determine XML namespace: {e}")
+        return links
+
+    # Loop through each 'url' element to extract the URLs
+    for url in root.findall(".//sitemap:url", namespaces):
+        loc = url.find('sitemap:loc', namespaces)
+        if loc is not None:
+            links.append(loc.text)
+        else:
+            logging.warning("Found a 'url' element without a 'loc' child. Skipping.")
+
+    # Check if any links were found
+    if not links:
+        logging.warning("No URLs found in the sitemap.")
+
+    return links

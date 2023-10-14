@@ -1,8 +1,10 @@
 from flask import Flask, jsonify, request
 import logging
-from web_utils import get_sitemap_url, is_valid_url, get_sitemaps, fetch_sitemap_contents
-from utils import is_valid_query, is_all_none, load_environment
+from web_utils import is_valid_url, get_base_url
+from utils import is_valid_query, load_environment
 from chatgpt import GPT4
+from googlesearch import GoogleSearch
+import json
 
 # Initialize Logging
 logging.basicConfig(filename='app.log', level=logging.INFO, format='%(asctime)s [%(levelname)s] - %(message)s')
@@ -13,6 +15,7 @@ load_environment()
 
 # Initialize GPT4
 gpt4 = GPT4()
+google_seach = GoogleSearch()
 
 @app.route('/find/page', methods=['POST'])
 def find_page():
@@ -38,29 +41,35 @@ def find_page():
         if not is_valid_query(query):
             return jsonify({'error': 'Invalid query.'}), 422
         
-        # Extract the sitemap URL from the base URL
-        base_sitemap_url = get_sitemap_url(url)
+        # Extract the base URL from the given URL
+        base_url = get_base_url(url)
 
-        # Get the sitemaps from the sitemap URL
-        sitemaps = get_sitemaps(base_sitemap_url)
+        search_queries = gpt4.get_search_queries(query, base_url)
 
-        if not sitemaps:
-            return jsonify({'error': 'No sitemaps found.'}), 423
+        results = set()
+        unique_results_list = []
+        for search in search_queries:
+            current_result = google_seach.get_top_result(search)
+
+            if current_result is None:
+                continue
+            
+            result_str = json.dumps(current_result)
+
+            results.add(result_str)
+            unique_results_list = [json.loads(x) for x in results]
+
+        if len(unique_results_list) <= 0:
+            return jsonify({'error': 'No relevant links found.'}), 423
         
-        # Filter for the relevant sitemaps
-        sitemaps = gpt4.get_relevant_sitemaps(sitemaps, query)
+        relevant_link = gpt4.get_relevant_result(query, base_url, unique_results_list)
 
-        sitemap_contents = fetch_sitemap_contents(sitemaps)
-
-        if is_all_none(sitemap_contents):
-            return jsonify({'error': 'No sitemap contents found.'}), 424
+        if relevant_link == 'None' or relevant_link is None:
+            return jsonify({'error': 'No relevant links found.'}), 424
         
-        if not sitemap_contents:
-            return jsonify({'error': 'No sitemap contents found.'}), 424
-
         
 
-        return jsonify({'message': 'Data received'}), 200
+        return jsonify({'message': relevant_link}), 200
 
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
@@ -70,6 +79,15 @@ def find_page():
 def greeting():
     try:
         message = gpt4.get_greeting()
+        return jsonify({'message': message}), 200
+    except Exception as e:
+        logging.error(f"An error occurred: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/responses/welcome-back', methods=['GET'])
+def welcome_back():
+    try:
+        message = gpt4.get_welcome_back()
         return jsonify({'message': message}), 200
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
