@@ -99,12 +99,39 @@ async function loadMessages(url) {
     });
 }
 
-function sendMessage() {
-    const message = messageInput.value;
+// Function to simulate typing animation
+function typeMessage(message) {
+    return new Promise((resolve) => {
+        let i = 0;
+        const messageElement = document.createElement('div');
+        const chatMessages = document.getElementById('chatMessages');
+        chatMessages.appendChild(messageElement);
 
-    if (message.trim() !== '') {
-        displayMessage('You', message);
-        messageInput.value = '';
+        function typeChar() {
+            if (i < message.length) {
+                messageElement.textContent += message.charAt(i);
+                i++;
+                setTimeout(typeChar, 50); // Adjust the delay (in milliseconds) between characters
+            } else {
+                resolve(); // Resolve the promise when typing is complete
+            }
+        }
+
+        typeChar();
+    });
+}
+
+function sendMessage() {
+    const messageInput = document.getElementById('messageInput');
+    const message = messageInput.value.trim();
+
+    if (message !== '') {
+      //displayMessage('You', message); // Display the message immediately
+
+        // Simulate typing animation for the sent message
+        await typeMessage(message);
+
+        messageInput.value = ''; // Clear the input field
     }
 }
 
