@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to load saved messages when popup is repopend
     function displaySavedMessages(messages) {
-        const chatDiv = document.getElementById('chat');
+        const chatDiv = document.getElementById('chatMessages');
         chatDiv.innerHTML = ''; // Clear existing messages
     
         messages.forEach(message => {
