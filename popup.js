@@ -146,7 +146,10 @@ function typeMessage(message, link) {
                     const hyperLink = document.createElement('a');
                     hyperLink.setAttribute('href', link);
                     hyperLink.textContent = "Click Here!";
-                    messageElement.append(hyperLink);
+	            hyperLink.addEventListener('onClick', () => {
+                        chrome.tabs.update({url: message.url});
+	            });
+		    messageElement.append(hyperLink);
 		}
                 saveMessage(rootUrl, messageElement.textContent, link);
                 resolve(); // Resolve the promise when typing is complete
@@ -211,10 +214,6 @@ function displayMessage(sender, message) {
     saveMessage(rootUrl, messageElement.textContent, message.url);
 }
 
-function redirect(url) {
-    window.location.href = url;
-}
-
 // Function to load saved messages when popup is repopend
 function displaySavedMessages(messages) {
     const chatDiv = document.getElementById('chatMessages');
@@ -229,7 +228,9 @@ function displaySavedMessages(messages) {
 	    const hyperLink = document.createElement('a');
 	    hyperLink.setAttribute('href', message.url);
 	    hyperLink.textContent = "Click Here!";
-            hyperLink.setAttribute('onClick', redirect(message.url));
+            hyperLink.addEventListener('onClick', () => {
+                chrome.tabs.update({url: message.url});
+	    });
 	    messageElement.append(hyperLink);
         }
 
