@@ -69,3 +69,34 @@
             font-weight: 700;
             font-size: 16px;
         }
+
+        .line-divider {
+            border-top: 1px solid #000; /* 1px solid black line */
+            margin: 10px 0; /* Add margin for better visual */
+        }
+
+        /* Styles for the loading indicator */
+        .loading-bubbles {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+        }
+        
+        .loading-bubble {
+            width: 20px;
+            height: 20px;
+            background-color: #007bff;
+            border-radius: 50%;
+            margin: 0 5px;
+            animation: bubbleAnimation 1.5s infinite ease-in-out;
+        }
+        
+        @keyframes bubbleAnimation {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
