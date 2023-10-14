@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const messageElement = document.createElement('div');
         messageElement.textContent = sender + ': ' + message;
         chatMessages.appendChild(messageElement);
-        saveMessage(messageElement);
+        saveMessage(messageElement.textContent);
     }
 
     // Function to load saved messages when popup is repopend
