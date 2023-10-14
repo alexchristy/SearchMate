@@ -5,25 +5,29 @@ document.addEventListener('DOMContentLoaded', function () {
     const messageInput = document.getElementById('messageInput');
     const sendMessageButton = document.getElementById('sendMessageButton');
     const urlContainer = document.getElementById('urlContainer');
-    var rootUrl;
+    var rootUrl
+    
     function getRootUrl() {
         // Get the active tab's URL
-        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        const currentTab = tabs[0];
-        const url = currentTab.url;
+        return new Promise((resolve, reject) => {
+		chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        	const currentTab = tabs[0];
+        	const url = currentTab.url;
     
-        // Display the URL in your popup
-        urlContainer.textContent = url;
-        }).then(() => {        
-            const parser = document.createElement('a');
-            parser.href = urlContainer.textContent;
+        	// Display the URL in your popup
+        	urlContainer.textContent = url;
+        	});        
+            	const parser = document.createElement('a');
+            	parser.href = urlContainer.textContent;
 
-            // Combine the protocol, hostname, and port to get the root URL
-            rootUrl = parser.protocol + '//' + parser.hostname;
-        });
+            	// Combine the protocol, hostname, and port to get the root URL
+            	resolve(parser.protocol + '//' + parser.hostname);
+	}
     }
-    getRootUrl();
-    console.log(rootUrl);
+    getRootUrl().then((url) => {
+	rootUrl = url;
+	console.log(rootUrl);
+    });
 
     try {
         loadMessages(rootUrl);
