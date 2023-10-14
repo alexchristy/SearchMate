@@ -82,8 +82,8 @@ async function startchat(urlContainer) {
             }
     
             return readStream();     
-        }).then(message => {
-                displayMessage("Chattr", JSON.parse(message).message);
+        }).then(async message => {
+                await typeMessage(JSON.parse(message).message);
         })
     });
 }
@@ -105,15 +105,16 @@ function typeMessage(message) {
         let i = 0;
         const messageElement = document.createElement('div');
         const chatMessages = document.getElementById('chatMessages');
-	messageElement.setAttribute('class', 'message-bubble');
+        messageElement.setAttribute('class', 'message-bubble');
         chatMessages.appendChild(messageElement);
-
+        messageElement.textContent += "Chattr: ";
         function typeChar() {
             if (i < message.length) {
                 messageElement.textContent += message.charAt(i);
                 i++;
-                setTimeout(typeChar, 50); // Adjust the delay (in milliseconds) between characters
+                setTimeout(typeChar, 30); // Adjust the delay (in milliseconds) between characters
             } else {
+                saveMessage(rootUrl, messageElement.textContent);
                 resolve(); // Resolve the promise when typing is complete
             }
         }
@@ -122,15 +123,12 @@ function typeMessage(message) {
     });
 }
 
-function sendMessage() {
+async function sendMessage() {
     const messageInput = document.getElementById('messageInput');
     const message = messageInput.value.trim();
 
     if (message !== '') {
-        displayMessage('You', message); // Display the message immediately
-
-        // Simulate typing animation for the sent message
-        await typeMessage(message);
+      displayMessage('You', message); // Display the message immediately
 
         messageInput.value = ''; // Clear the input field
     }
