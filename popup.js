@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Display the URL in your popup
         urlContainer.textContent = url;
     });
-    const parser = document.createElement('a');
+    var parser = document.createElement('a');
     parser.href = urlContainer.textContent;
 
     // Combine the protocol, hostname, and port to get the root URL
@@ -23,7 +23,9 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
         loadMessages(rootUrl);
     }
-    catch (error) {}
+    catch (error) {
+        console.log(error);
+    }
     
     // Add a click event listener to the send button
     sendMessageButton.addEventListener('click', function () {
