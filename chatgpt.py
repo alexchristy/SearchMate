@@ -199,3 +199,26 @@ class GPT4:
         message = response['choices'][0]['message']['content']
 
         return message
+    
+    def gen_unfocused_response(self, user_query: str, base_url: str):
+
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {
+                "role": "user",
+                "content": f"You are an expert at social interaction and communication. Using your skills, I need you to respond to the User Query and ask them if there is anything you can help them find on the website pointed at by User URL. User query below is the query the user sent to us and the User URL is the current site they are at when the sent query. Keep it simple and short and concise. Max 2 sentences. Make sure it makes sure it responds to the user query and asks them if they need help. Only give the response to the user.\n\nUser Query: {user_query}\nUser URL: {base_url}"
+                }
+            ],
+            temperature=0.25,
+            max_tokens=256,
+            top_p=1,
+            frequency_penalty=0,
+            presence_penalty=0
+        )
+
+        message = response['choices'][0]['message']['content']
+
+        return message
+
+        
