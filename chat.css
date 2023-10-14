@@ -1,8 +1,5 @@
 /* Styles for the chat rectangle */
         .chat-rectangle {
-            position: fixed;
-            bottom: 0;
-            right: 0;
             background-color: #0077b6;
             width: 300px; /* Width of the chat rectangle */
             height: 400px; /* Height of the chat rectangle */
