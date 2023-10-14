@@ -14,9 +14,14 @@ document.addEventListener('DOMContentLoaded', function () {
         // Display the URL in your popup
         urlContainer.textContent = url;
     });
+    const parser = document.createElement('a');
+    parser.href = urlContainer.textContent;
+
+    // Combine the protocol, hostname, and port to get the root URL
+    const rootUrl = parser.protocol + '//' + parser.hostname;
 
     try {
-        loadMessages();
+        loadMessages(rootUrl);
     }
     catch (error) {}
     
@@ -32,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    function loadMessages() {
+    function loadMessages(url) {
         chrome.storage.local.get(url, function(result) {
             const chatMessages = result[url] || [];
             displaySavedMessages(chatMessages);
@@ -54,11 +59,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const messageElement = document.createElement('div');
         messageElement.textContent = sender + ': ' + message;
         chatMessages.appendChild(messageElement);
-	    const parser = document.createElement('a');
-        parser.href = urlContainer.textContent;
-    
-        // Combine the protocol, hostname, and port to get the root URL
-        const rootUrl = parser.protocol + '//' + parser.hostname;
         saveMessage(rootUrl, messageElement.textContent);
     }
 
