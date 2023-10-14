@@ -151,8 +151,13 @@ function displaySavedMessages(messages) {
 
     messages.forEach(message => {
         const messageElement = document.createElement('div');
-        messageElement.setAttribute('class', 'message-bubble');
         messageElement.textContent = message;
+        if (message[0] == 'C') {
+            messageElement.setAttribute('class', 'chattr-message-bubble');
+        }
+        else {
+            messageElement.setAttribute('class', 'user-message-bubble');
+        }
         chatDiv.appendChild(messageElement);
     });
 }
