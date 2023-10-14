@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const url = currentTab.url;
     
         // Display the URL in your popup
-        urlContainer.textContent = `Current URL: ${url}`;
+        urlContainer.textContent = url;
     });
 
     try {
