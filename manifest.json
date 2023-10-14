@@ -1,11 +1,19 @@
 {
-    "name": "Extension Demo",
+    "manifest_version": 3,
+    "name": "Color Changer V3",
     "version": "1.0",
-    "description": "Build an Basic Extension!",
-    "permissions": ["activeTab"],
-    "browser_action": {
+    "description": "Change the background color of the webpage.",
+    "icons": {
+      "48": "icon.png"
+    },
+    "action": {
       "default_popup": "popup.html",
       "default_icon": "img/gator-hack-smaller.png"
     },
-    "manifest_version": 3
+    "permissions": [
+      "activeTab"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    }
   }
