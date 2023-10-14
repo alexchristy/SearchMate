@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
         messages.forEach(message => {
             const messageElement = document.createElement('div');
             messageElement.textContent = message;
+            console.log(message);
             chatDiv.appendChild(messageElement);
         });
     }
