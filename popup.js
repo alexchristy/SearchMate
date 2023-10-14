@@ -107,7 +107,7 @@ async function startchat(urlContainer) {
     
             return readStream();     
         }).then(async message => {
-		const contents = JSON.parse(message);
+		const contents =  await JSON.parse(message);
                 await typeMessage(content.message, content.url);
         })
     });
