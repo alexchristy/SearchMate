@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Get references to the input field and the send button
     const messageInput = document.getElementById('messageInput');
     const sendMessageButton = document.getElementById('sendMessageButton');
+    loadMessages();
     
     // Add a click event listener to the send button
     sendMessageButton.addEventListener('click', function () {
@@ -31,6 +32,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    function loadMessages() {
+        chrome.storage.local.get(['chatMessages'], function(result) {
+            const chatMessages = result.chatMessages || [];
+            displaySavedMessages(chatMessages);
+        });
+    }
+
     function sendMessage() {
         const message = messageInput.value;
 
@@ -40,12 +48,35 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Function to display a message in the chat messages container
+    // Function to display a message in the chat messages container and then save to local storage
     function displayMessage(sender, message) {
         const chatMessages = document.getElementById('chatMessages');
         const messageElement = document.createElement('div');
         messageElement.textContent = sender + ': ' + message;
         chatMessages.appendChild(messageElement);
+        saveMessage(messageElement);
+    }
+
+    // Function to load saved messages when popup is repopend
+    function displaySavedMessages(messages) {
+        const chatDiv = document.getElementById('chat');
+        chatDiv.innerHTML = ''; // Clear existing messages
+    
+        messages.forEach(message => {
+            const messageElement = document.createElement('div');
+            messageElement.textContent = message;
+            chatDiv.appendChild(messageElement);
+        });
+    }
+
+    function saveMessage(message) {
+        chrome.storage.local.get(['chatMessages'], function(result) {
+            const chatMessages = result.chatMessages || [];
+            chatMessages.push(message);
+    
+            // Save the updated messages to storage
+            chrome.storage.local.set({ chatMessages: chatMessages });
+        });
     }
 });
 
