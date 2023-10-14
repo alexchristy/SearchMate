@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     if (amountMessages > 0)
     {
-       path = "/responses/greeting";
+       path = "/responses/welcome-back";
     }
     else
     {
@@ -52,8 +52,28 @@ document.addEventListener('DOMContentLoaded', function () {
         },
     })
     .then(response => {
-        displayMessage("Chattr", response.json().message);     
-    })
+        const readableStream = response.body;
+        const textDecoder = new TextDecoder();
+        const reader = readableStream.getReader();
+
+        function readStream() {
+            return reader.read().then(({ done, value }) => {
+                if (done) {
+                    console.log('Stream reading complete');
+                    return;
+                }
+
+                const text = textDecoder.decode(value);
+                console.log(text);
+                return text;
+            });
+        }
+
+        return readStream();     
+    }).then(message =>
+        {
+            displayMessage("Chattr", JSON.parse(message).message);
+        })
     });
     
     // Add a click event listener to the send button
