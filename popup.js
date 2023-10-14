@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             	// Combine the protocol, hostname, and port to get the root URL
             	resolve(parser.protocol + '//' + parser.hostname);
-	}
+	});
     }
     getRootUrl().then((url) => {
 	rootUrl = url;
