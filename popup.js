@@ -144,10 +144,11 @@ function typeMessage(message, link) {
 		if (link != null) {
                     messageElement.textContent += " ";
                     const hyperLink = document.createElement('a');
-                    hyperLink.setAttribute('href', link);
+                    hyperLink.setAttribute('href', '#');
                     hyperLink.textContent = "Click Here!";
-	            hyperLink.addEventListener('onClick', () => {
-                        chrome.tabs.update({url: message.url});
+	            hyperLink.addEventListener('click', () => {
+                        console.log("click here");
+                        chrome.tabs.update({url: link});
 	            });
 		    messageElement.append(hyperLink);
 		}
@@ -226,9 +227,10 @@ function displaySavedMessages(messages) {
         
 	if (message.url != null) {
 	    const hyperLink = document.createElement('a');
-	    hyperLink.setAttribute('href', message.url);
+	    hyperLink.setAttribute('href', '#');
 	    hyperLink.textContent = "Click Here!";
-            hyperLink.addEventListener('onClick', () => {
+            hyperLink.addEventListener('click', () => {
+                console.log("click here");
                 chrome.tabs.update({url: message.url});
 	    });
 	    messageElement.append(hyperLink);
@@ -247,7 +249,11 @@ function displaySavedMessages(messages) {
 function saveMessage(url, message, productUrl = null) {
     chrome.storage.local.get(url, function(result) {
         const chatMessages = result[url] || [];
-        const messageData = {url: productUrl, message: message.substring(0, message.length - 11)};
+        var temp = message;
+        if (message.substring(message.length - 11) == "Click Here!") {
+            temp = message.substring(0, message.length - 11);
+        }
+        const messageData = {url: productUrl, message: temp};
         chatMessages.push(messageData);
         const data = {};
 	

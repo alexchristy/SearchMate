@@ -5,7 +5,8 @@
   "description": "A basic chat extension",
   "permissions": [
     "activeTab",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "action": {
     "default_popup": "popup.html",
