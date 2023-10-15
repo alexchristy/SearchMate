@@ -151,7 +151,7 @@ function typeMessage(message, link) {
         const chatMessages = document.getElementById('chatMessages');
         messageElement.setAttribute('class', 'chattr-message-bubble');
         chatMessages.appendChild(messageElement);
-        messageElement.textContent += "Chattr: ";
+        messageElement.textContent += "SeachMate: ";
 
         function typeChar() {
             if (i < message.length) {
@@ -258,7 +258,7 @@ function displaySavedMessages(messages) {
 	    messageElement.append(hyperLink);
         }
 
-        if (message.message[0] == 'C') {
+        if (message.message[0] == 'S') {
             messageElement.setAttribute('class', 'chattr-message-bubble');
         }
         else {
