@@ -97,10 +97,11 @@ async function startchat(urlContainer) {
         }
 	showLoading();
         fetch(IP+port+path, {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
+	    body: {url: rootUrl}
         })
         .then(response => {
 	    hideLoading();
