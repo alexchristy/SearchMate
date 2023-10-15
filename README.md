@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-	<img src="https://raw.githubusercontent.com/alexchristy/SearchMate/main/gifs/query.gif">
+	<img src="https://raw.githubusercontent.com/alexchristy/SearchMate/main/gifs/query.gif" width="600" height="338">
 </p>
 
 ## Key Features
