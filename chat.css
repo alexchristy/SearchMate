@@ -16,7 +16,7 @@
             padding: 10px; /* Add padding for better visual */
             display: flex;
             flex-direction: column; /* Stack messages vertically */
-	        background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('img/DALLE_2023-10-15_14.32.24_-_Illustration_of_a_minimalist_modern_tech_logo_featuring_a_magnifying_glass_interlinked_with_a_neural_network_representing_the_AI_capabilities_of_the_.png');
+	        background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('img/logo.png');
     	    background-position: center; /* Center the logo */
     	    background-repeat: no-repeat; /* Do not repeat the logo */
     	    background-size: 50%; /* Resize the logo to fit the box */;
