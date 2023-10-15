@@ -45,7 +45,11 @@ def find_page():
         is_user_searching = gpt4.is_user_searching(query, url)
 
         if not is_user_searching:
-            return jsonify({'error': 'User is not searching for the given query.'}), 425
+            logging.info(f"User is not searching for the given query: {query}")
+            
+            unfocused_response = gpt4.gen_unfocused_response(query, url)
+
+            return jsonify({'link': None, 'message': unfocused_response}), 200
         
         if is_user_searching is None:
             return jsonify({'error': 'An error occurred.'}), 500
