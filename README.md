@@ -1,13 +1,13 @@
 
 <h1 align="center">
   <br>
-  <a href="http://www.amitmerchant.com/electron-markdownify"><img src="https://raw.githubusercontent.com/amitmerchant1990/electron-markdownify/master/app/img/markdownify.png" alt="Markdownify" width="200"></a>
+  <a href="#"><img src="https://raw.githubusercontent.com/alexchristy/SearchMate/main/img/logo.png" alt="SearchMate" width="200"></a>
   <br>
-  Markdownify
+  SearchMate
   <br>
 </h1>
 
-<h4 align="center">A minimal Markdown Editor desktop app built on top of <a href="http://electron.atom.io" target="_blank">Electron</a>.</h4>
+<h4 align="center">A web extension that integrates <a href="https://chat.openai.com" target="_blank">ChatGPT</a> with <a href="https://google.com" target="_blank">Google Search</a> for effortless natural language-driven website navigation.</h4>
 
 <p align="center">
   <a href="https://badge.fury.io/js/electron-markdownify">
