@@ -39,12 +39,13 @@ def find_page():
         logging.info(f"Received url: {url}, query: {query}")
 
         if not is_valid_url(url):
-            return jsonify({'error': 'Invalid URL.'}), 421
+            url = "https://www.google.com"
         
         if not is_valid_query(query):
             return jsonify({'error': 'Invalid query.'}), 422
         
         is_user_searching = gpt4.is_user_searching(query, url)
+        is_user_shopping = gpt4.is_user_shopping(query, url)
 
         if not is_user_searching:
             logging.info(f"User is not searching for the given query: {query}")
@@ -85,10 +86,14 @@ def find_page():
         if len(unique_results_list) <= 0:
             return jsonify({'link': None, 'message': 'Sorry I was not able to find any results.'}), 200
         
+        page_content = None
         for result in unique_results_list:
             relevant_link = gpt4.get_relevant_result(query, base_url, unique_results_list)
 
             page_content = fetch_page_content(relevant_link)
+
+            if is_user_shopping:
+                relevant_product_link = gpt4.get_relevant_product_link(query, base_url, unique_results_list)
 
             # If successful, break out of the loop
             if page_content is not None:
@@ -97,29 +102,61 @@ def find_page():
             unique_results_list.remove(result)
 
         if relevant_link == 'None' or relevant_link is None:
-            return jsonify({'error': 'No relevant links found.'}), 424
-        
-        customer_response = gpt4.gen_customer_response(query, base_url, relevant_link, page_content)
+            return jsonify({'link': None, 'message': 'Sorry I was not able to find any relevant links or pages for you.'}), 200
 
+        if is_user_shopping and (relevant_product_link is None or relevant_product_link == 'None'):
+            relevant_product_link = relevant_link
+
+        is_page_empty = gpt4.is_page_empty(page_content)
+
+        if is_page_empty is None:
+            logging.info('Error occurred while checking if page is empty.')
+            return jsonify({'error': 'An error occurred.'}), 500
+        
+        if is_user_shopping:
+            customer_response = gpt4.gen_customer_response(query, base_url, relevant_product_link, page_content)
+        else:
+            customer_response = gpt4.gen_customer_response(query, base_url, relevant_link, page_content)
+
+        if is_page_empty:
+            logging.info('Page is empty.')
+            return jsonify({'link': None, 'message': customer_response}), 200
+        
         return jsonify({"link": relevant_link, "message": customer_response}), 200
 
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
-@app.route('/responses/greeting', methods=['GET'])
+@app.route('/responses/greeting', methods=['POST'])
 def greeting():
     try:
-        message = gpt4.get_greeting()
+        # Parse JSON data from the request
+        data = request.json
+
+        url = data.get('url', None)
+
+        if url is None:
+            return jsonify({'error': 'Missing url parameter.'}), 401
+
+        message = gpt4.get_greeting(url)
         return jsonify({'message': message}), 200
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
-@app.route('/responses/welcome-back', methods=['GET'])
+@app.route('/responses/welcome-back', methods=['POST'])
 def welcome_back():
     try:
-        message = gpt4.get_welcome_back()
+        # Parse JSON data from the request
+        data = request.json
+
+        url = data.get('url', None)
+
+        if url is None:
+            return jsonify({'error': 'Missing url parameter.'}), 401
+
+        message = gpt4.get_welcome_back(url)
         return jsonify({'message': message}), 200
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
