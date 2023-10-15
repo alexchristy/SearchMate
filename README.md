@@ -33,8 +33,9 @@
 
 ## How To Use
 
+Clone this repository:
+
 ```bash
-# Clone this repository
 $ git clone https://github.com/amitmerchant1990/electron-markdownify
 ```
 
