@@ -32,7 +32,7 @@ def fetch_page_content(url):
     """
     try:
         # Fetch the page content using requests
-        response = requests.get(url)
+        response = requests.get(url=url, timeout=3)
         
         # Raise an error if status code indicates failure
         response.raise_for_status()

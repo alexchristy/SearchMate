@@ -27,6 +27,8 @@ def find_page():
         url = data.get('url', None)
         query = data.get('query', None)
 
+        query = query.lower()
+
         if url is None:
             return jsonify({'error': 'Missing url parameter.'}), 401
         
@@ -57,23 +59,31 @@ def find_page():
         # Extract the base URL from the given URL
         base_url = get_base_url(url)
 
-        search_queries = gpt4.get_search_queries(query, base_url)
+        retries = 1
+        while retries >= 0:
+            search_queries = gpt4.get_search_queries(query, base_url)
 
-        results = set()
-        unique_results_list = []
-        for search in search_queries:
-            current_result = google_seach.get_top_result(search)
+            results = set()
+            unique_results_list = []
+            for search in search_queries:
+                current_result = google_seach.get_top_result(search)
 
-            if current_result is None:
-                continue
-            
-            result_str = json.dumps(current_result)
+                if current_result is None:
+                    continue
+                
+                result_str = json.dumps(current_result)
 
-            results.add(result_str)
-            unique_results_list = [json.loads(x) for x in results]
+                results.add(result_str)
+                unique_results_list = [json.loads(x) for x in results]
 
+            if len(unique_results_list) <= 0:
+                base_url = "https://www.google.com"
+                retries -= 1
+
+            break
+        
         if len(unique_results_list) <= 0:
-            return jsonify({'error': 'No relevant links found.'}), 423
+            return jsonify({'link': None, 'message': 'Sorry I was not able to find any results.'}), 200
         
         for result in unique_results_list:
             relevant_link = gpt4.get_relevant_result(query, base_url, unique_results_list)
