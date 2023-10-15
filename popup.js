@@ -54,6 +54,7 @@ function showLoading() {
     }
     loadingContainer.appendChild(loading);
     chatMessages.append(loadingContainer);
+    scrollToBottom();
 }
 
 function hideLoading() {
@@ -155,7 +156,7 @@ function typeMessage(message, link) {
                 messageElement.textContent += message.charAt(i);
                 i++;
                 setTimeout(typeChar, 30); // Adjust the delay (in milliseconds) between characters
-		scrollToBottom();
+		        scrollToBottom();
             } else {
 		if (link != null) {
                     messageElement.textContent += " ";
