@@ -12,6 +12,7 @@
 <p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#how-to-use">How To Use</a> •
+  <a href="#examples">Examples</a> •
   <a href="#credits">Credits</a> •
   <a href="#license">License</a>
 </p>
@@ -66,9 +67,23 @@ $ git clone https://github.com/alexchristy/SearchMate
 	<img src="https://raw.githubusercontent.com/alexchristy/SearchMate/main/Extension/img/open_extension.png">
 </p>
 
+## Examples
+
+<p align="center">
+	<img src="https://raw.githubusercontent.com/alexchristy/SearchMate/main/gifs/open.gif" width="600" height="338">
+</p>
+<p align="center"> Displaying the welcome message when customer opens the extension.</p>
+
+<p align="center">
+	<img src="https://raw.githubusercontent.com/alexchristy/SearchMate/main/gifs/welcome.gif" width="600" height="338">
+</p>
+<p align="center"> Displaying welcome back message when customer reopens the extension.</p>
+
+
+
 ## Credits
 
-This software uses the following 3rd party APIs:
+This software uses the following 3rd party APIs and libraries:
 
 - [ChatGPT](https://chat.openai.com/)
 - [Google Search](https://google.com/)
