@@ -1,7 +1,7 @@
 
 <h1 align="center">
   <br>
-  <a <img src="https://raw.githubusercontent.com/alexchristy/SearchMate/main/img/logo.png" alt="SearchMate" width="200"></a>
+  <a href="#"><img src="https://raw.githubusercontent.com/alexchristy/SearchMate/main/img/logo.png" alt="SearchMate" width="200"></a>
   <br>
   SearchMate
   <br>
