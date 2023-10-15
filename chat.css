@@ -16,10 +16,10 @@
             padding: 10px; /* Add padding for better visual */
             display: flex;
             flex-direction: column; /* Stack messages vertically */
-	    background-image: img/gator-hack-smaller.png; /* Add this line */
+	        background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('img/gator-hack-smaller.png');
     	    background-position: center; /* Center the logo */
     	    background-repeat: no-repeat; /* Do not repeat the logo */
-    	    background-size: contain; /* Resize the logo to fit the box */
+    	    background-size: 50%; /* Resize the logo to fit the box */;
         }
 
         /* Styles for hyperlinks within the chat messages */

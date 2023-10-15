@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const messageInput = document.getElementById('messageInput');
     const sendMessageButton = document.getElementById('sendMessageButton');
     const urlContainer = document.getElementById('urlContainer');
+
     startchat(urlContainer);
     
     // Add a click event listener to the send button
@@ -101,7 +102,7 @@ async function startchat(urlContainer) {
             headers: {
                 'Content-Type': 'application/json',
             },
-	    body: {url: rootUrl}
+	    body: JSON.stringify({url: rootUrl})
         })
         .then(response => {
 	    hideLoading();
