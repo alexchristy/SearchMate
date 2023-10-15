@@ -1,7 +1,7 @@
 
 <h1 align="center">
   <br>
-  <a <img src="https://raw.githubusercontent.com/alexchristy/gator-hacks-23/main/img/logo.png" alt="Markdownify" width="200"></a>
+  <a <img src="https://raw.githubusercontent.com/alexchristy/gator-hacks-23/main/img/logo.png" alt="SearchMate" width="200"></a>
   <br>
   SearchMate
   <br>
