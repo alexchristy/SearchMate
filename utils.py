@@ -2,6 +2,7 @@ import logging
 from dotenv import load_dotenv
 import tiktoken
 import math
+import re
 
 def is_valid_query(query):
     """
@@ -92,3 +93,16 @@ def chunk_array(arr, num_of_chunks):
         start = end
 
     return chunks
+
+def extract_first_url(text):
+    # Regular expression pattern to identify URLs
+    pattern = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+    
+    # Find all URLs in the text
+    urls = re.findall(pattern, text)
+    
+    # Check if any URLs are found and return the first one
+    if urls:
+        return urls[0]
+    else:
+        return "No valid URL found."
