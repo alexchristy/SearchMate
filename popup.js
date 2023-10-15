@@ -25,6 +25,20 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// Function to scroll down to the most recent message
+function scrollToBottom() {
+  const chatMessagesDiv = document.querySelector('.chat-messages');
+
+  // Check if the chatMessagesDiv exists
+  if (!chatMessagesDiv) {
+    console.error('Chat messages div not found.');
+    return;
+  }
+
+  chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+}
+
+
 function showLoading() {
     const loadingContainer = document.createElement('div');
     const chatMessages = document.getElementById('chatMessages');
@@ -108,7 +122,7 @@ async function startchat(urlContainer) {
             return readStream();     
         }).then(async message => {
 		const content =  await JSON.parse(message);
-        console.log(content);
+                console.log(content);
                 await typeMessage(content.message, content.url);
         })
     });
@@ -128,6 +142,7 @@ async function loadMessages(url) {
 // Function to simulate typing animation
 function typeMessage(message, link) {
     return new Promise((resolve) => {
+	scrollToBottom();
         let i = 0;
         const messageElement = document.createElement('div');
         const chatMessages = document.getElementById('chatMessages');
@@ -140,6 +155,7 @@ function typeMessage(message, link) {
                 messageElement.textContent += message.charAt(i);
                 i++;
                 setTimeout(typeChar, 30); // Adjust the delay (in milliseconds) between characters
+		scrollToBottom();
             } else {
 		if (link != null) {
                     messageElement.textContent += " ";
@@ -151,6 +167,7 @@ function typeMessage(message, link) {
                         chrome.tabs.update({url: link});
 	            });
 		    messageElement.append(hyperLink);
+		    scrollToBottom();
 		}
                 saveMessage(rootUrl, messageElement.textContent, link);
                 resolve(); // Resolve the promise when typing is complete
@@ -207,11 +224,13 @@ async function sendMessage() {
 
 // Function to display a message in the chat messages container and then save to local storage
 function displayMessage(sender, message) {
+    scrollToBottom();
     const chatMessages = document.getElementById('chatMessages');
     const messageElement = document.createElement('div');
     messageElement.setAttribute('class', 'user-message-bubble');
     messageElement.textContent = sender + ': ' + message.message;
     chatMessages.appendChild(messageElement);
+    scrollToBottom();
     saveMessage(rootUrl, messageElement.textContent, message.url);
 }
 
